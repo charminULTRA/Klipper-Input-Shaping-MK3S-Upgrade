@@ -3,8 +3,9 @@
 Latest  updates:
 
 4/19/2025
-- Guidance update - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing).
+- Guidance update - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing). Updated IS instructions based on current Klipper.
 - Macros update - Print start and purge chagned to be more like the MK4. Print end will raise toolhead to at least 50mm for easier access to clean leftover filament before next start.
+- IS update - Include support for BIGTREETECH (BTT) ADXL345 accelerometer board.
 
 4/17/2024 - Guidance update - In PrusaSlicer, Print Settings > Advanced: DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
@@ -173,17 +174,28 @@ PRINT_END
 
 ## Step 7. INPUT SHAPING :)
 1. To set some expectations, it is important that you run your input shaping tests on a very sturdy surface. Use of foam or any cushioning under your printer is not recommended, as it can skew the results, and you won't be using it after implementing IS anyway. This process, through the resonance measurements, can also reveal potential issues with hardware misconfiguration, such as loose components, loose belts, etc, which can be time consuming to troubleshoot, but will pay off later.
-2. It is recommended to follow this video for Input Shaping: https://www.youtube.com/watch?v=OoWQUcFimX8
-3. You can also refer to  more technical Klipper guidance here: https://www.klipper3d.org/Measuring_Resonances.html
-4. KUSBA installation instructions, excluding Steps 2.1 and 2.2: https://github.com/xbst/KUSBA/blob/main/Docs/v2-Rampon-Firmware.md
-   - Steps 2.1 and 2.2: adxlmcu.cfg has already been provided in this repo, no need to add a new one for the KUSBA. I'm not familiar with other ADXL's, so these may need a different config.
-   - May not be applicable, but if you run across any instructions elsewhere saying to install the Linux MCU, this is not necessary...we use the MCU on the KUSBA.
-5. Non-KUSBA - Please Google for relevant instructions.
-6. Links for KUSBA mounts
-   - Nozzle mount (requires screws) https://github.com/xbst/KUSBA/blob/main/Mounts/M6_KUSBA_Mount.stl
-   - Fan mount https://www.printables.com/model/495459-kusba-accelerometer-universal-mount
-   - Other mounts: https://www.printables.com/search/models?q=kusba&ctx=models
-
+2. Update the firmware on the accelerometer by following the user manual
+   - KUSBA: https://github.com/xbst/KUSBA/blob/main/Docs/v2-Firmware.md
+   - BTT: https://github.com/bigtreetech/ADXL345
+3. Print a toolhead and bed accelerometer mount
+   - KUSBA: https://www.printables.com/search/models?q=kusba&ctx=models
+   - BTT toolhead: https://www.printables.com/model/1270348-bigtreetech-btt-adxl345-prusa-mk3s-extruder-mount
+   - BTT bed: https://www.printables.com/model/1270385-bigtreetech-btt-adxl345-prusa-mk3s-bed-mount
+4. Install the accelerometer on the toolhead and connect the USB cable to the Raspbery Pi
+5. Enable (uncomment) the appropriate config file in your printer.cfg then save and restart the firmware.
+6. Verify the accelerometer is sending values
+   - Using the console, send the command "ACCELEROMETER_QUERY"
+7. Perform X-axis calibration:
+   - Using the console, send the command "SHAPER_CALIBRATE AXIS=X"
+   - When complete, send the command "SAVE_CONFIG"
+8. Remove accelerometer from the toolhead and install onto the bed
+9. Perform Y-axis calibration:
+   - Using the console, send the command "SHAPER_CALIBRATE AXIS=Y"
+   - When complete, send the command "SAVE_CONFIG"
+10. Open your printer.cfg
+   - Copy the values from the auto-generated "[input_shaper]" section at the bottom into the upper section
+   - Comment out (or remove) the accelerometer config file that you enabled in step 5.
+11. Save printer.cfg & restart the firmware. You are done! 
 
 ## Step 8. Re-do Pressure Advance after finishing your IS setup
 8) Self Explainatory
