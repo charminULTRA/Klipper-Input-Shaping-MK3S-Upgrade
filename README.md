@@ -60,12 +60,13 @@ Undoing this upgrade and returning to stock Prusa firmware can be completed in u
 - USB Type A female to MicroUSB male converter (if using a Pi Zero 2 W, included in kit linked above)
 - An accelerometer (enables easier Input Shaping calibration, optional, but recommended):
   - Direct support in this guide is provided for:
-    - KUSBA: Klipper USB Accelerometer: [https://amzn.to/4bzgAzA](https://amzn.to/49QFR79)
+    - KUSBA: Klipper USB Accelerometer (~$20 USD): [https://amzn.to/4bzgAzA](https://amzn.to/49QFR79)
       - NOTE 3/1/2024 - 3D-printed KUSBA mounts online worked but required modification to fit, the nozzle-mounted accelerometer could work better.
-    - BTT: BIGTREETECH USB Accelerometer: [https://amazon.com/dp/B0CHJQ6CXF](https://amazon.com/dp/B0CHJQ6CXF)
+    - BTT: BIGTREETECH USB Accelerometer v2.0 (~$16 USD): [https://amazon.com/dp/B0CHJQ6CXF](https://amazon.com/dp/B0CHJQ6CXF)
+      - Most easily mounted on the MK3S+
   - Alternative options that may require some configuration:
-    - Cheaper alternative: Nozzle-mountable USB Accelerometer: [https://amzn.to/4cg55gQ ](https://amzn.to/3Vgk6t9)
-    - Another alternative: https://amzn.to/3VqvN0B
+    - Cheaper alternative: BTT Nozzle-mountable USB Accelerometer v1.0 (~$14 USD): [https://amzn.to/4cg55gQ ](https://amzn.to/3Vgk6t9)
+    - Another alternative: FYSETC 3D (~$17 USD) https://amzn.to/3VqvN0B
 
 As an Amazon Associate I earn from qualifying purchases.
 
@@ -180,10 +181,10 @@ If this process fails, it is possible that you may need to connect via the Seria
 1. Update the firmware on the accelerometer by following the user manual
    - KUSBA: https://github.com/xbst/KUSBA/blob/main/Docs/v2-Firmware.md
    - BTT: https://github.com/bigtreetech/ADXL345
-1. Print a toolhead and bed accelerometer mount
+1. Print a toolhead and bed accelerometer mount (if not using the nozzle mount option)
    - KUSBA: https://www.printables.com/search/models?q=kusba&ctx=models
-   - BTT toolhead: https://www.printables.com/model/1270348-bigtreetech-btt-adxl345-prusa-mk3s-extruder-mount
-   - BTT bed: https://www.printables.com/model/1270385-bigtreetech-btt-adxl345-prusa-mk3s-bed-mount
+   - BTT v2.0 MK3S+ toolhead: https://www.printables.com/model/1270348-bigtreetech-btt-adxl345-prusa-mk3s-extruder-mount
+   - BTT v1.0/v2.0 MK3S/MK3S+ bed: https://www.printables.com/model/1270385-bigtreetech-btt-adxl345-prusa-mk3s-bed-mount
 1. Install the accelerometer on the toolhead and connect the USB cable to the Raspbery Pi
 1. Enable (uncomment) the appropriate config file in your printer.cfg then save and restart the firmware.
 1. Verify the accelerometer is sending values
