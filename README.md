@@ -2,6 +2,10 @@
 
 Latest  updates:
 
+4/19/2025
+- Guidance update - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing).
+- Macros update - Print start and purge chagned to be more like the MK4. Print end will raise toolhead to at least 50mm for easier access to clean leftover filament before next start.
+
 4/17/2024 - Guidance update - In PrusaSlicer, Print Settings > Advanced: DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
 4/2/2024 - Removed Mechanical Gantry Calibration macro. I'm not sure if it ever worked properly.
@@ -136,28 +140,31 @@ If this process fails, it is possible that you may need to connect via the Seria
 2. Copy the MK3.5 printer:
    - Go to Dependencies > "Detach from System Preset"
    - Rename the newly detached printer, you can now use this for your Klipper Printer Profile.
-   - Delete ALL existing data in ALL Custom G-Code boxes! Important!
-   - REPLACE the start and end code to your new custom printer profile in your custom printer's "Printer Settings", under "Custom G-Code". You will not use the factory start and end g-code. The "PRINT_START" and "PRINT_END" commands activate the identically-named macros in your Macros.cfg file. Macros are like containers for their own set of Gcode which can be referenced more easily.
+   - Open your new printer. Go to "Printers" and select your new printer from the dropdown on the top left.
+   - Set G-code flavor to Klipper. Go to General > Firmware > set "G-code flavor" to "Klipper"
+   - Disable binary g-code. Go to General > Firmware > Uncheck "Supports binary G-code".
+   - Go to Custom G-code and delete ALL existing data in ALL boxes.
+   - Set the start and end code to the contents below. You will not use the factory start and end g-code. The "PRINT_START" and "PRINT_END" commands activate the identically-named macros in your macros.cfg file. Macros are like containers for their own set of Gcode which can be referenced more easily.
+   - Save your preset by clicking on the save icon towards the top of the screen.
+
+Start Code
+```yml
+M190 S0 ; Prevents prusaslicer from prepending m190 to the gcode interfering with the macro
+M109 S0 ; Prevents prusaslicer from prepending m109 to the gcode interfering with the macro
+PRINT_START EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature]
+```
+
+End Code
+```yml
+PRINT_END
+  ```
+   
 5. Copy the factory Prusa printing profiles:
    - For "Print Settings" Presets, and Filament Setting Presets - Using the MK3.5 system presets, go to Dependencies > "Detach from System Preset"
    - Rename the newly detached presets, you can now use this for your Klipper Printer Profile.
-   - CRITICAL: For the Printer Profile, change "G-Code Flavor" to "Klipper".
-   - Delete ALL existing data in ALL Custom G-Code boxes! Important!
    - IMPORTANT: In Print Settings > Advanced - DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
 
-  Start Code
-  ```yml
-  M190 S0 ; Prevents prusaslicer from prepending m190 to the gcode interfering with the macro
-  M109 S0 ; Prevents prusaslicer from prepending m109 to the gcode interfering with the macro
-  PRINT_START EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature]
-  ```
-
-  End Code
-
-  ```yml
-  PRINT_END
-  ```
 ## Step 6. Tuning (Do not use PrusaSlicer until completeing this guide, or at least until getting to the EM step in this guide)
 1. Follow Ellis' Guide for primary tuning steps (NOT OPTIONAL): https://ellis3dp.com/Print-Tuning-Guide/articles/index_tuning.html
 2. This step is a critcal part of implementing Klipper and cannot be skipped
