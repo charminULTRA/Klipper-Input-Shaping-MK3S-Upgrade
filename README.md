@@ -6,6 +6,7 @@ Latest  updates:
 - Guidance update - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing). Updated IS instructions based on current Klipper.
 - Macros update - Print start and purge chagned to be more like the MK4. Print end will raise toolhead to at least 50mm for easier access to clean leftover filament before next start. Filament runout reuses unload filament macro and parks in a more favorable location.
 - IS update - Include support for BIGTREETECH (BTT) ADXL345 accelerometer board.
+- Enable adaptive bed mesh calibration
 
 4/17/2024 - Guidance update - In PrusaSlicer, Print Settings > Advanced: DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
