@@ -194,7 +194,7 @@ If this process fails, it is possible that you may need to connect via the Seria
    - BTT v2.0 MK3S+ toolhead: https://www.printables.com/model/1270348-bigtreetech-btt-adxl345-prusa-mk3s-extruder-mount
    - BTT v1.0/v2.0 MK3S/MK3S+ bed: https://www.printables.com/model/1270385-bigtreetech-btt-adxl345-prusa-mk3s-bed-mount
 1. Install the accelerometer on the toolhead and connect the USB cable to the Raspbery Pi
-1. Enable (uncomment) the appropriate config file in your printer.cfg then save and restart the firmware.
+1. Uncomment the appropriate accelerometer config file (either adxlmcu-BTT.cfg or adxlmcu-KUSBA.cfg) in your printer.cfg then save and restart the firmware.
 1. Verify the accelerometer is sending values
    - Using the console, send the command "ACCELEROMETER_QUERY"
 1. Perform X-axis calibration:
