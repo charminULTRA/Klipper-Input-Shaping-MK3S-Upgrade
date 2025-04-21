@@ -10,6 +10,7 @@ Latest  updates:
   - Print start and purge chagned to be more like the MK4.
   - Print end will raise toolhead to at least 50mm for easier access to clean leftover filament before next start.
   - Filament runout reuses unload filament macro and parks in a more favorable location.
+  - Filament unload uses MK3.5 sequence for cleaner break
 - IS update - Include support for BIGTREETECH (BTT) ADXL345 accelerometer board.
 - Enable adaptive bed mesh calibration
 - Stepper settings for current and microsteps set to MK3.5 values
