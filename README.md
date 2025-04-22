@@ -142,11 +142,9 @@ sudo service klipper start
 
 If this process fails, it is possible that you may need to connect via the Serial port, which is a more involved process, requiring some hardware modification. The Serial port approach is out-of-scope for this guide. Please search Google for the method or reach out on the Klipper Discord: https://discord.com/channels/431557959978450984/1205590905378312293
 
-## Step 4. Perform configuration checks
+## Step 4. Perform configuration checks and PID tune
 
-1. See this page for Klipper's configuration checks: https://www.klipper3d.org/Config_checks.html
-   - End stops are not applicable
-1. PID Tuning is REQUIRED, just like with your Prusa factory firmware. Once you hit Save Config, copy paste the values at the bottom of your printer.cfg into the relevant upper sections.
+Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's configuration checks page: https://www.klipper3d.org/Config_checks.html
     
 ## Step 5. Customize PrusaSlicer for Klipper (DO NOT PRINT FROM THE SLICER UNTIL COMPLETING STEP 6!!)
 1. Add MK3.5 printer to PrusaSlicer configuration from the Configuration Wizard
@@ -178,11 +176,14 @@ If this process fails, it is possible that you may need to connect via the Seria
    - IMPORTANT: In Print Settings > Advanced - DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
 
-## Step 6. Tuning (Do not use PrusaSlicer until completeing this guide, or at least until getting to the EM step in this guide)
-1. Follow Ellis' Guide for primary tuning steps (NOT OPTIONAL): https://ellis3dp.com/Print-Tuning-Guide/articles/index_tuning.html
-1. This step is a critcal part of implementing Klipper and cannot be skipped
-1. For Pressure Advance and Extrusion Multiplier - It is recommended to add these values in to each individual Filament Profile in PrusaSlicer. PA can be added using the Custom G-Code menu, such as `SET_PRESSURE_ADVANCE ADVANCE=.055`
+## Step 6. Tuning
+1. **Prior to printing with PrusaSlicer**, follow Ellis' Guide for primary tuning steps: https://ellis3dp.com/Print-Tuning-Guide/articles/index_tuning.html
+   - **Extruder calibration and Pressure Advance are critcal parts of implementing Klipper and cannot be skipped**. Following the other steps are recommended but can be revisited as required.
+1. For Pressure Advance and Extrusion Multiplier - It is recommended to add these values in to each individual Filament Profile in PrusaSlicer. PA can be added to the Filaments > Custom G-Code > Start G-code, such as `SET_PRESSURE_ADVANCE ADVANCE=.055`
 1. Once you finish tuning, try printing some test prints using the STOCK MK3S+ PROFILES.
+
+## Almost Done!!
+You can now print using PrusaSlicer with your found speed. However, this speed comes at the price of worse print quality (ringing) than stock and tuning Input Shaping is the only way to bring it back! It is **highly** encouraged that you continue and tune with an accelerometer. Optionally, print a Benchy now and then run the exact same G-code again after IS tuning to see the difference. If you don't want to or can't get an accelerometer, there are alternatives to the next step that can work well such as https://www.klipper3d.org/Resonance_Compensation.html.
 
 ## Step 7. INPUT SHAPING :)
 1. To set some expectations, it is important that you run your input shaping tests on a very sturdy surface. Use of foam or any cushioning under your printer is not recommended, as it can skew the results, and you won't be using it after implementing IS anyway. This process, through the resonance measurements, can also reveal potential issues with hardware misconfiguration, such as loose components, loose belts, etc, which can be time consuming to troubleshoot, but will pay off later.
@@ -204,12 +205,12 @@ If this process fails, it is possible that you may need to connect via the Seria
 1. Perform Y-axis calibration:
    - Using the console, send the command "SHAPER_CALIBRATE AXIS=Y"
    - When complete, send the command "SAVE_CONFIG"
-1. Open your printer.cfg
-   - Copy the values from the auto-generated "[input_shaper]" section at the bottom into the upper section
-   - Comment out (or remove) the accelerometer config file that you enabled in step 5.
-1. Save printer.cfg & restart the firmware. You are done! 
+1. Unplug the accelerometer and remove it from the bed. Store it away safely for another day.
+1. Open your printer.cfg and comment out (or remove) the accelerometer config file that you enabled in step 5.
+1. Save printer.cfg & restart the firmware. You are done tuning IS!
 
 ## Step 8. Re-do Pressure Advance after finishing your IS setup
+You might get lucky here, but re-running the same test quickly to verify the PA setting is always a good idea.
 
 ## THE END! Happy printing.
 
