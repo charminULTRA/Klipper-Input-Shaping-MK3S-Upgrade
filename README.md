@@ -160,9 +160,14 @@ Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's conf
       - Uncheck "Emit temperature commands automatically"
    - Set the start and end code to the contents below. You will not use the factory start and end g-code. The "PRINT_START" and "PRINT_END" commands activate the identically-named macros in your macros.cfg file. Macros are like containers for their own set of Gcode which can be referenced more easily.
 
-        Start Code
+        Start Code MK3S+
         ```yml
         PRINT_START EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature]
+        ```
+
+        Start Code MK3S
+        ```yml
+        PRINT_START EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature] PRINTER_MODEL="MK3S"
         ```
 
         End Code
