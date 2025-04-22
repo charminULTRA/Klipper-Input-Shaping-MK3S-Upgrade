@@ -186,7 +186,10 @@ Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's conf
 You can now print using PrusaSlicer with your found speed. However, this speed comes at the price of worse print quality (ringing) than stock and tuning Input Shaping is the only way to bring it back! It is **highly** encouraged that you continue and tune with an accelerometer. Optionally, print a Benchy now and then run the exact same G-code again after IS tuning to see the difference. If you don't want to or can't get an accelerometer, there are alternatives to the next step that can work well such as https://www.klipper3d.org/Resonance_Compensation.html.
 
 ## Step 7. INPUT SHAPING :)
-1. To set some expectations, it is important that you run your input shaping tests on a very sturdy surface. Use of foam or any cushioning under your printer is not recommended, as it can skew the results, and you won't be using it after implementing IS anyway. This process, through the resonance measurements, can also reveal potential issues with hardware misconfiguration, such as loose components, loose belts, etc, which can be time consuming to troubleshoot, but will pay off later.
+There are many steps, but this doesn't actually take much time and is very automated by Klipper.
+
+To set some expectations, it is important that you run your input shaping tests on a very sturdy surface. Use of foam or any cushioning under your printer is not recommended, as it can skew the results, and you won't be using it after implementing IS anyway. This process, through the resonance measurements, can also reveal potential issues with hardware misconfiguration, such as loose components, loose belts, etc, which can be time consuming to troubleshoot, but will pay off later.
+
 1. Update the firmware on the accelerometer by following the user manual
    - KUSBA: https://github.com/xbst/KUSBA/blob/main/Docs/v2-Firmware.md
    - BTT: https://github.com/bigtreetech/ADXL345
