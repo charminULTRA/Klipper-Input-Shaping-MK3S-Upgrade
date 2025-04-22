@@ -148,19 +148,20 @@ Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's conf
     
 ## Step 5. Customize PrusaSlicer for Klipper (DO NOT PRINT FROM THE SLICER UNTIL COMPLETING STEP 6!!)
 1. Add MK3.5 printer to PrusaSlicer configuration from the Configuration Wizard
+1. Ensure you are in "Expert mode" by selecting it in the mode dropdown menu located in the top, right of the window. 
 1. Copy the MK3.5 printer:
    - Go to Dependencies > "Detach from System Preset"
    - Rename the newly detached printer, you can now use this for your Klipper Printer Profile.
-   - Open your new printer. Go to "Printers" and select your new printer from the dropdown on the top left.
-   - Set G-code flavor to Klipper. Go to General > Firmware > set "G-code flavor" to "Klipper"
-   - Disable binary g-code. Go to General > Firmware > Uncheck "Supports binary G-code".
-   - Go to Custom G-code and delete ALL existing data in ALL boxes.
+   - Open your new printer by going to "Printers" and select your new printer from the dropdown on the top left.
+   - Set G-code flavor to Klipper by going to General > Firmware > set "G-code flavor" to "Klipper"
+   - Disable binary g-code by going to General > Firmware > Uncheck "Supports binary G-code".
+   - Clear *everything* under Custom G-code
+      - Delete ALL existing data in ALL boxes.
+      - Uncheck "Emit temperature commands automatically"
    - Set the start and end code to the contents below. You will not use the factory start and end g-code. The "PRINT_START" and "PRINT_END" commands activate the identically-named macros in your macros.cfg file. Macros are like containers for their own set of Gcode which can be referenced more easily.
 
         Start Code
         ```yml
-        M190 S0 ; Prevents prusaslicer from prepending m190 to the gcode interfering with the macro
-        M109 S0 ; Prevents prusaslicer from prepending m109 to the gcode interfering with the macro
         PRINT_START EXTRUDER_TEMP=[first_layer_temperature] BED_TEMP=[first_layer_bed_temperature]
         ```
 
