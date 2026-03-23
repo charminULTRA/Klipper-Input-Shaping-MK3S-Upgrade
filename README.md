@@ -183,6 +183,7 @@ Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's conf
 
 
 ## Step 6. Tuning
+1. The MK3S/+ is known to have a slight twist in the X-axis, which causes the PINDA to report inaccurate Z heights depending on its position along X. Run `AXIS_TWIST_COMPENSATION_CALIBRATE`, at each of the 3 points, perform a manual paper test to set the Z offset. Run `SAVE_CONFIG` when complete. This only needs to be done once unless you disassemble the X-axis. See https://www.klipper3d.org/Axis_Twist_Compensation.html for more information.
 1. **Prior to printing with PrusaSlicer**, follow Ellis' Guide for primary tuning steps: https://ellis3dp.com/Print-Tuning-Guide/articles/index_tuning.html
    - **Extruder calibration and Pressure Advance are critcal parts of implementing Klipper and cannot be skipped**. Following the other steps are recommended but can be revisited as required.
 1. For Pressure Advance and Extrusion Multiplier - It is recommended to add these values in to each individual Filament Profile in PrusaSlicer. PA can be added to the Filaments > Custom G-Code > Start G-code, such as `SET_PRESSURE_ADVANCE ADVANCE=.055`
