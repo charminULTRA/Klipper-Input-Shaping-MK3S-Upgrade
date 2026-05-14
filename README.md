@@ -7,7 +7,7 @@ Latest  updates:
   - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing).
   - Updated IS instructions based on current Klipper.
 - Macros update
-  - Print start and purge chagned to be more like the MK4.
+  - Print start and purge changed to be more like the MK4.
   - Print end will raise toolhead to at least 50mm for easier access to clean leftover filament before next start.
   - Filament runout reuses unload filament macro and parks in a more favorable location.
   - Filament unload uses MK3.5 sequence for cleaner break
@@ -98,7 +98,7 @@ As an Amazon Associate I earn from qualifying purchases.
 ## Step 0. Pre-Check and Expectations
 
 - Watch this YouTube video for a basic introduction to Klipper: https://www.youtube.com/watch?v=iNHta6zljoM
-- Depending on your familarity with Klipper, expect this full process (including tuning, which is the most time intensive) to take anywhere from 5-20 hours. This range is large because it depends on: 1) your own familarity with tuning procedures that Prusa normally takes care of for you, 2) your familiarity with Klipper, 3) your familiarity with tools like Raspberry Pi, SSH, and command line interfaces. It can also be on the high side if hardware misconfiguration contributes to issues such as bad vibrations in your printer, which will make Input Shaping calibration difficult until addresses. Please be prepared for this.
+- Depending on your familiarity with Klipper, expect this full process (including tuning, which is the most time intensive) to take anywhere from 5-20 hours. This range is large because it depends on: 1) your own familiarity with tuning procedures that Prusa normally takes care of for you, 2) your familiarity with Klipper, 3) your familiarity with tools like Raspberry Pi, SSH, and command line interfaces. It can also be on the high side if hardware misconfiguration contributes to issues such as bad vibrations in your printer, which will make Input Shaping calibration difficult until addresses. Please be prepared for this.
 - Get Z offset value from your current firmware (Menu -> Calibration -> Z-offset), you will need it for the Klipper config.
 - Your bed needs to be perpendicular (based on Prusa XYZ Calibration results). An uneven printer means you need to fix the physical hardware first and re-visit the assembly instructions. If not you will have to do the skew calibration before printing or you risk crashing your nozzle to the bed.
 - Some of the instructions will be direct links to external guides, which would not make sense to add here, particularly Ellis' 3D Printing guide.
@@ -192,11 +192,43 @@ Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's conf
    - Rename the newly detached presets, you can now use this for your Klipper Printer Profile.
    - IMPORTANT: In Print Settings > Advanced - DISABLE "Arc Fitting" - G2/G3 should not be used with Klipper and is not necessary.
 
+### Step 5 Alternative: Using Orca Slicer instead of PrusaSlicer
+
+If you prefer Orca Slicer, you can set it up for Klipper as follows:
+
+1. Add a new Prusa MK3S+ printer in Orca Slicer.
+1. Click the WiFi icon next to the printer name and enter your Mainsail URL (e.g., `http://mainsailos.local` or your Pi's IP address) to enable direct upload and printing.
+1. Open the Printer settings (gear icon next to the printer dropdown).
+1. Under General > Firmware, set "G-code flavor" to "Klipper".
+1. Under General > Firmware, uncheck "Supports binary G-code" if present.
+1. Clear *everything* under Custom G-code — Delete ALL existing data in ALL boxes. Uncheck "Emit temperature commands automatically" if present.
+1. Set the start and end code:
+
+    Start Code MK3S+
+    ```yml
+    PRINT_START EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single]
+    ```
+
+    Start Code MK3S
+    ```yml
+    PRINT_START EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer_single] PRINTER_MODEL="MK3S"
+    ```
+
+    End Code
+    ```yml
+    PRINT_END
+    ```
+
+1. Save your printer preset.
+1. For Print Settings: open the Process settings (notepad/edit icon next to the Process dropdown). Under Quality > Precision, DISABLE "Arc fitting" — G2/G3 should not be used with Klipper.
+1. For Filament Profiles: Pressure Advance can be added per-filament under Filament > Custom G-code > Start G-code, such as `SET_PRESSURE_ADVANCE ADVANCE=.055`.
+
+> **Note:** Orca Slicer uses different placeholder variable names than PrusaSlicer. Make sure to use `[nozzle_temperature_initial_layer]` and `[bed_temperature_initial_layer_single]` (not `[first_layer_temperature]` and `[first_layer_bed_temperature]`).
 
 ## Step 6. Tuning
 1. The MK3S/+ is known to have a slight twist in the X-axis, which causes the PINDA to report inaccurate Z heights depending on its position along X. Run `AXIS_TWIST_COMPENSATION_CALIBRATE`, at each of the 3 points, perform a manual paper test to set the Z offset. Run `SAVE_CONFIG` when complete. This only needs to be done once unless you disassemble the X-axis. See https://www.klipper3d.org/Axis_Twist_Compensation.html for more information.
 1. **Prior to printing with PrusaSlicer**, follow Ellis' Guide for primary tuning steps: https://ellis3dp.com/Print-Tuning-Guide/articles/index_tuning.html
-   - **Extruder calibration and Pressure Advance are critcal parts of implementing Klipper and cannot be skipped**. Following the other steps are recommended but can be revisited as required.
+   - **Extruder calibration and Pressure Advance are critical parts of implementing Klipper and cannot be skipped**. Following the other steps are recommended but can be revisited as required.
 1. For Pressure Advance and Extrusion Multiplier - It is recommended to add these values in to each individual Filament Profile in PrusaSlicer. PA can be added to the Filaments > Custom G-Code > Start G-code, such as `SET_PRESSURE_ADVANCE ADVANCE=.055`
 1. Once you finish tuning, try printing some test prints using the STOCK MK3S+ PROFILES.
 
@@ -215,7 +247,7 @@ To set some expectations, it is important that you run your input shaping tests 
    - KUSBA: https://www.printables.com/search/models?q=kusba&ctx=models
    - BTT v2.0 MK3S+ toolhead: https://www.printables.com/model/1270348-bigtreetech-btt-adxl345-prusa-mk3s-extruder-mount
    - BTT v1.0/v2.0 MK3S/MK3S+ bed: https://www.printables.com/model/1270385-bigtreetech-btt-adxl345-prusa-mk3s-bed-mount
-1. Install the accelerometer on the toolhead and connect the USB cable to the Raspbery Pi
+1. Install the accelerometer on the toolhead and connect the USB cable to the Raspberry Pi
 1. Uncomment the appropriate accelerometer config file (either adxlmcu-BTT.cfg or adxlmcu-KUSBA.cfg) in your printer.cfg then save and restart the firmware.
 1. Verify the accelerometer is sending values
    - Using the console, send the command "ACCELEROMETER_QUERY"
@@ -235,10 +267,54 @@ You might get lucky here, but re-running the same test quickly to verify the PA 
 
 ## THE END! Happy printing.
 
+## Notes for Raspberry Pi Zero 2 W Users
+
+The Pi Zero 2 W is a supported and capable board for running Klipper, but its limited resources (512MB RAM, single USB OTG port) require some extra considerations:
+
+### USB Hub Requirement
+The Pi Zero 2 W has only one micro-USB data port (the other is power-only). When performing Input Shaping calibration (Step 7), you need both the printer and the accelerometer connected simultaneously. You will need a **USB 2.0 OTG hub** connected to the data port. **Important:** USB 3.0 hubs may not be recognized by the Pi Zero 2 W's USB 2.0 OTG controller — use a USB 2.0 hub.
+
+### Recommended OS Optimizations
+The Pi Zero 2 W's BCM43430 WiFi chip can occasionally cause kernel lockups under heavy load. The following mitigations are recommended:
+
+1. **Enable persistent journald logging** — This ensures kernel logs survive a lockup for post-mortem analysis:
+   ```
+   sudo sed -i 's/#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
+   sudo systemctl restart systemd-journald
+   ```
+
+2. **Enable the hardware watchdog** — This automatically reboots the Pi if the kernel locks up:
+   ```
+   # Add to /boot/firmware/config.txt:
+   dtparam=watchdog=on
+   
+   # Install and configure watchdog:
+   sudo apt install watchdog
+   # Add to /etc/watchdog.conf:
+   watchdog-device = /dev/watchdog
+   watchdog-timeout = 15
+   max-load-1 = 24
+   
+   sudo systemctl enable watchdog
+   sudo systemctl start watchdog
+   ```
+
+3. **Reduce WiFi scan overhead** — Create `/etc/NetworkManager/conf.d/wifi-scan.conf`:
+   ```
+   [device]
+   wifi.scan-rand-mac-address=no
+   wifi.scan-generate-mac-address-mask=
+   
+   [connection]
+   wifi.bgscan=simple:30:-65:300
+   ```
+
+These optimizations help maintain a stable connection between your PC, the Pi, and the printer during long print jobs.
+
 ## Reverting to Stock Prusa Firmware
 1. Connect the USB cable from your printer to your PC
 1. Download Prusa's firmware from their website: https://help.prusa3d.com/downloads
-3. From PruasSlicer, Configuration > Flash Firmware. Select your file and flash.
+3. From PrusaSlicer, Configuration > Flash Firmware. Select your file and flash.
 
 
 
