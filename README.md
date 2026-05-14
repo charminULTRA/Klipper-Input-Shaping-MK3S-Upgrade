@@ -142,6 +142,17 @@ sudo service klipper start
 
 If this process fails, it is possible that you may need to connect via the Serial port, which is a more involved process, requiring some hardware modification. The Serial port approach is out-of-scope for this guide. Please search Google for the method or reach out on the Klipper Discord: https://discord.com/channels/431557959978450984/1205590905378312293
 
+### Known Issue: ATmega 32u2 USB Serial Corruption
+
+The Einsy RAMBo board uses an ATmega 32u2 chip as a USB-to-serial bridge between your Pi and the main ATmega 2560. **Prusa's stock firmware on this chip has a known bug that corrupts serial data under Klipper's throughput.** This manifests as rising `bytes_invalid` counts in Klipper's stats, eventually causing "Lost communication with MCU" shutdowns — often mid-print.
+
+Symptoms include:
+- `bytes_invalid` climbing during printing (check with `grep bytes_invalid ~/printer_data/logs/klippy.log | tail -5`)
+- Random MCU disconnects, especially during fast moves or long prints
+- On Pi Zero 2W: USB crash also kills WiFi (shared bus), requiring a full power cycle
+
+**Fix:** Flash the Hoodserial firmware onto the 32u2 using an ISP programmer. This requires a USBasp programmer (~$8) and a 10-pin to 6-pin ISP adapter (~$6). See the [32u2 Hoodserial Flash Guide](32u2-Hoodserial-Flash-Guide.md) for the complete tested procedure. After flashing, `bytes_invalid` drops to zero.
+
 ## Step 4. Perform configuration checks and PID tune
 
 Perform all verify and PID tuning instructions EXCEPT endstops on Klipper's configuration checks page: https://www.klipper3d.org/Config_checks.html
