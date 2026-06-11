@@ -3,7 +3,7 @@
 Latest  updates:
 
 6/2026
-- Mergerd various PRs from other contributors
+- Mergerd various updates from other contributors
 
 4/2025
 - Guidance update
