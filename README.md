@@ -2,6 +2,9 @@
 
 Latest  updates:
 
+6/2026
+- Mergerd various PRs from other contributors
+
 4/2025
 - Guidance update
   - Reworked PrusaSlicer settings based on latest version (2.9.2 at time of writing).
