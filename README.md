@@ -1,5 +1,11 @@
 # Klipperized Input Shaping for the MK3S/+, a simplified guide for a powerful upgrade
 
+printables 360 Cooling
+raspberry pi 4 with ssd
+Repetier Server 2.0.1
+- Klipper mit Repetier Server
+
+
 Latest  updates:
 
 6/2026
